@@ -1,0 +1,23 @@
+Número de estados: 3
+
+Nombre del estado 1: Sano
+Nombre del estado 2: Enfermo
+Nombre del estado 3: Muerte
+
+Ingrese símbolos:
+a b
+
+Matriz para a:
+Fila 1: 0.7 0.2 0.1
+Fila 2: 0.3 0.5 0.2
+Fila 3: 0 0 1
+
+
+Matriz para b:
+Fila 1: 0.6 0.3 0.1
+Fila 2: 0.2 0.5 0.3
+Fila 3: 0 0 1
+
+Vector inicial: [1 0 0]
+
+cadena: [ab]
