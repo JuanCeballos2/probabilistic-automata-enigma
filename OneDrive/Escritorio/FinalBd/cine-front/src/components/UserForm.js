@@ -1,5 +1,10 @@
 import React, { useState } from 'react';
 import { Form, Button, Alert, Spinner } from 'react-bootstrap';
+import '../App.css';  // Subir un nivel desde "components" a la carpeta "src"
+import '../index.css';
+
+
+
 
 function UserForm({ setUser }) {
   const [userData, setUserData] = useState({
@@ -9,23 +14,33 @@ function UserForm({ setUser }) {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState(null);
+  const [newPreference, setNewPreference] = useState('');
 
-  // Maneja los cambios en el formulario
+  // Maneja los cambios en los campos de texto
   const handleInputChange = (e) => {
     const { name, value } = e.target;
+    setUserData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
 
-    // Si es el campo de 'preferencias', convertir la cadena en un array
-    if (name === 'preferencias') {
+  const handleAddPreference = () => {
+    if (newPreference.trim() && !userData.preferencias.includes(newPreference.trim())) {
       setUserData((prevData) => ({
         ...prevData,
-        [name]: value.split(',').map(item => item.trim()).filter(item => item), // Filtra cualquier valor vacío
+        preferencias: [...prevData.preferencias, newPreference.trim()],
       }));
-    } else {
-      setUserData((prevData) => ({
-        ...prevData,
-        [name]: value,
-      }));
+      setNewPreference(''); // Limpiar el campo de texto
     }
+  };
+
+  const handleRemovePreference = (index) => {
+    const updatedPreferences = userData.preferencias.filter((_, i) => i !== index);
+    setUserData((prevData) => ({
+      ...prevData,
+      preferencias: updatedPreferences,
+    }));
   };
 
   const handleSubmit = async (e) => {
@@ -97,18 +112,46 @@ function UserForm({ setUser }) {
         </Form.Group>
 
         <Form.Group controlId="formPreferencias">
-          <Form.Label>Preferencias</Form.Label>
-          <Form.Control
-            type="text"
-            name="preferencias"
-            value={userData.preferencias.join(', ')}  
-            onChange={handleInputChange}
-            placeholder="Acción, Comedia, Drama..."
-            required
-          />
+        <Form.Label>Preferencias</Form.Label>
+          <div>
+            <Form.Control
+              type="text"
+              value={newPreference}
+              onChange={(e) => setNewPreference(e.target.value)}
+              placeholder="Agregar preferencia"
+            />
+            <Button variant="secondary" onClick={handleAddPreference} disabled={!newPreference}>
+              Agregar
+            </Button>
+            
+            {/* Agregamos un salto de línea entre los botones */}
+            <div style={{ marginBottom: '15px' }}></div>
+
+            <ul style={{ listStyleType: 'none', paddingLeft: '0' }}>
+              {userData.preferencias.map((pref, index) => (
+                <li key={index} style={{ marginBottom: '10px' }}>
+                  {pref} 
+                  <Button
+                    className="remove-preference-btn"
+                    variant="danger"
+                    onClick={() => handleRemovePreference(index)}
+                    style={{ marginLeft: '10px' }}
+                  >
+                    Eliminar
+                  </Button>
+                </li>
+              ))}
+            </ul>
+          </div>
         </Form.Group>
 
-        <Button variant="primary" type="submit" disabled={isSubmitting}>
+
+                <Button
+          className="center-button"
+          variant="primary"
+          type="submit"
+          disabled={isSubmitting}
+        >
           {isSubmitting ? (
             <>
               <Spinner animation="border" size="sm" /> Registrando...
@@ -117,6 +160,8 @@ function UserForm({ setUser }) {
             'Registrarse'
           )}
         </Button>
+
+
       </Form>
     </div>
   );
