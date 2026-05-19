@@ -21,3 +21,9 @@ Fila 3: 0 0 1
 Vector inicial: [1 0 0]
 
 cadena: [ab]
+
+correr maquina 
+python3 maquina-enigma.py
+
+correr automata
+python automata-proba-manual.py 
