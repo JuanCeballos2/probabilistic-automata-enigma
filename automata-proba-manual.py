@@ -10,7 +10,7 @@ def crear_matriz(nombre, n_estados):
         fila = list(map(float, input(f"Fila {i+1}: ").split()))
         # Validación
         if round(sum(fila), 5) != 1.0:
-            print("⚠️ La suma de la fila debe ser 1")
+            print("La suma de la fila debe ser 1")
             return crear_matriz(nombre, n_estados)
         matriz.append(fila)
     return np.array(matriz)
@@ -20,10 +20,10 @@ def crear_matriz(nombre, n_estados):
 # -----------------------------
 def procesar_cadena(cadena, matrices, P0):
     P = P0.copy()
-    print("\n🔄 Proceso paso a paso:")
+    print("\nProceso paso a paso:")
     for simbolo in cadena:
         if simbolo not in matrices:
-            print(f"❌ Símbolo '{simbolo}' no definido")
+            print(f"Símbolo '{simbolo}' no definido")
             return None
         print(f"\nAplicando '{simbolo}':")
         P = np.dot(P, matrices[simbolo])
@@ -33,7 +33,7 @@ def procesar_cadena(cadena, matrices, P0):
 # -----------------------------
 # MAIN
 # -----------------------------
-print("=== AUTÓMATA PROBABILÍSTICO MANUAL ===")
+print("AUTÓMATA PROBABILÍSTICO")
  
 # Estados
 n_estados = int(input("Número de estados: "))
@@ -57,22 +57,22 @@ print("\nVector inicial (ej: 1 0 0 0):")
 P0 = np.array(list(map(float, input().split())))
  
 # -----------------------------
-# MENÚ INTERACTIVO 🔥
+# MENÚ INTERACTIVO 
 # -----------------------------
 while True:
     cadena = input("\nIngrese la cadena (ej: aa, bb, ab) o 'salir': ")
     if cadena.lower() == "salir":
-        print("👋 Fin del programa")
+        print("Fin del programa")
         break
     resultado = procesar_cadena(cadena, matrices, P0)
     if resultado is None:
         continue
     # Resultado final
-    print("\n📊 RESULTADO FINAL:")
+    print("\nRESULTADO FINAL:")
     for i in range(len(estados)):
         print(f"{estados[i]}: {round(resultado[i]*100,2)}%")
     # Condición
     if resultado[-1] < 0.3:
-        print("✔ Cumple condición (< 0.3)")
+        print("Cumple condición (< 0.3)")
     else:
-        print("❌ No cumple condición (>= 0.3)")
+        print("No cumple condición (>= 0.3)")
